@@ -105,8 +105,8 @@ makesystem ()
 	printdownloading 
 	termux-wake-lock 
 	if [ $(getprop ro.product.cpu.abi) = x86_64 ] || [ $(getprop ro.product.cpu.abi) = x86 ];then
-		adjustmd5file
 		getimage
+		adjustmd5file
 	fi
 	if [ "$mirror" = "os.archlinuxarm.org" ] || [ "$mirror" = "mirror.archlinuxarm.org" ]; then
 		ftchstnd 
@@ -129,7 +129,7 @@ preproot ()
 {
 	if [ $(du ~/arch/*z | awk {'print $1'}) -gt 112233 ];then
 		if [ $(getprop ro.product.cpu.abi) = x86_64 ] || [ $(getprop ro.product.cpu.abi) = x86 ];then
-			proot --link2symlink -0 bsdtar -xpf $file --strip-components 1 
+			proot --link2symlink bsdtar -xpf $file --strip-components 1 2>/dev/null ||:
 
 		else
 			proot --link2symlink -0 bsdtar -xpf $file 
