@@ -11,9 +11,9 @@ printdetectedsystem ()
 {
 	printf "\n\033[36;1m 🕝 < 🕛 \033[1;34mDetected $(uname -m) " 
 	if [[ $(getprop ro.product.device) == *_cheets ]];then
-		printf "Chromebook: \033[36;1mOK\n\033[0m"
+		printf "Chromebook: \033[32;1mOK\n\033[0m"
 	else
-		printf "$(uname -o) operating system: \033[36;1mOK\n\033[0m"
+		printf "$(uname -o) operating system: \033[32;1mOK\n\033[0m"
 	fi
 }
 
@@ -24,17 +24,17 @@ printdownloading ()
 
 printdownloadingx86 ()
 {
-	printf "\033[36;1mDownloading $file and the corresponding checksum from http://$mirror.  \033[37;1mThis may take a long time pending Internet connection.\n\n\033[36;1m"
+	printf "\033[0;32mDownloading \033[1;32m$file \033[0;32mand the corresponding checksum from \033[1;32mhttp://$mirror\033[0;32m.  \033[37;1mThis may take a long time pending Internet connection.\n\n\033[0;32m"
 }
 
 printdownloadingftch ()
 {
-	printf "\033[36;1mDownloading $file and the corresponding checksum from $nmirror.  \033[37;1mThis may take a long time pending the Internet connection.\n\n\033[36;1m"
+	printf "\033[0;32mDownloading \033[1;32m$file \033[0;32mand the corresponding checksum from \033[1;32m$nmirror\033[0;32m.  \033[37;1mThis may take a long time pending the Internet connection.\n\n\033[0;32m"
 }
 
 printdownloadingftchit ()
 {
-	printf "\033[36;1mDownloading $file and the corresponding checksum from http://$mirror.  \033[37;1mThis may take a long time pending connection.\n\n\033[36;1m"
+	printf "\033[0;32mDownloading \033[1;32m$file \033[0;32mand the corresponding checksum from \033[1;32mhttp://$mirror\033[0;32m.  \033[37;1mThis may take a long time pending connection.\n\n\033[0;32m"
 }
 
 printconfigq ()
@@ -44,7 +44,7 @@ printconfigq ()
 
 printmd5check ()
 {
-	printf "\n\033[36;1m 🕠 < 🕛 \033[1;34mChecking download integrity with md5sum.  \033[37;1mThis may take a little while.\033[36;1m\n\n"
+	printf "\n\033[36;1m 🕠 < 🕛 \033[1;34mChecking download integrity with md5sum.  \033[37;1mThis may take a little while.\033[0;32m\n\n"
 }
 
 printmd5error ()
@@ -55,7 +55,7 @@ printmd5error ()
 
 printmd5success ()
 {
-	printf '\033]2;  🕡 < 🕛 Uncompressing Arch Linux system image file.  This will take a long time; Be patient.\007'"\n\033[36;1m 🕕 < 🕛 \033[1;34mSystem image file download integrity: \033[36;1mOK\n\n\033[36;1m 🕡 < 🕛 \033[1;34mUncompressing \033[36;1m$file\033[37;1m.  This will take a long time.  Be patient.\n\033[0m"
+	printf '\033]2;  🕡 < 🕛 Uncompressing Arch Linux system image file.  This will take a long time; Be patient.\007'"\n\033[36;1m 🕕 < 🕛 \033[1;34mSystem image file download integrity: \033[32;1mOK\n\n\033[36;1m 🕡 < 🕛 \033[1;34mUncompressing \033[32;1m$file\033[37;1m.  This will take a long time.  Be patient.\n\033[0m"
 }
 
 printmismatch ()
