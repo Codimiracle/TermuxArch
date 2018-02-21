@@ -5,19 +5,6 @@
 # https://sdrausty.github.io/TermuxArch/README has information about this project. 
 ################################################################################
 
-adjustmd5file ()
-{
-	if [[ $dm = wget ]];then 
-		printdownloadingx86 
-		wget $dmverbose -N --show-progress http://$mirror${path}md5sums.txt
-	else
-		printdownloadingx86 
-		curl $dmverbose --fail --retry 4 -O http://$mirror${path}md5sums.txt
-	fi
-	sed '2q;d' md5sums.txt > $file.md5
-	rm md5sums.txt
-}
-
 ftchit ()
 {
 	if [[ $dm = wget ]];then 
@@ -32,20 +19,17 @@ ftchit ()
 
 ftchstnd ()
 {
-	#cmirror="http://mirror.archlinuxarm.org/"
-	cmirror="http://os.archlinuxarm.org/"
+	printf "\033[0;34mContacting worldwide mirror \033[0;32m$cmirror\033[0;34m.  "
 	if [[ $dm = wget ]];then 
-		printf "\033[0;32mContacting mirror \033[1;32m$cmirror.  "
-		curl -v $cmirror 2>gmirror
-		nmirror=$(grep Location gmirror | awk {'print $3}') 
+		wget -v -O/dev/null $cmirror 2>gmirror
+		nmirror=$(grep Location gmirror | awk {'print $2'}) 
 		rm gmirror
 		printdownloadingftch 
 		wget $dmverbose -N --show-progress $nmirror$path$file.md5 
 		wget $dmverbose -N --show-progress $nmirror$path$file 
 	else
-		printf "\033[0;32mContacting mirror \033[1;32m$cmirror.  "
 		curl -v $cmirror 2>gmirror
-		nmirror=$(grep Location gmirror | awk {'print $3}') 
+		nmirror=$(grep Location gmirror | awk {'print $3'}) 
 		rm gmirror
 		printdownloadingftch 
 		curl $dmverbose --fail --retry 4 -O $nmirror$path$file.md5 -O $nmirror$path$file
@@ -54,10 +38,29 @@ ftchstnd ()
 
 getimage ()
 {
+	printdownloadingx86 
 	if [[ $dm = wget ]];then 
+		wget $dmverbose -N --show-progress http://$mirror${path}md5sums.txt
+		if [ $(getprop ro.product.cpu.abi) = x86 ];then
+			file=$(grep i686 md5sums.txt | awk {'print $2'})
+		else
+			file=$(grep boot md5sums.txt | awk {'print $2'})
+		fi
+		sed '2q;d' md5sums.txt > $file.md5
+		rm md5sums.txt
+		printdownloadingx86two 
 		wget $dmverbose -c --show-progress http://$mirror$path$file 
 	else
-		curl $dmverbose -C - --fail --retry 4 -O http://$mirror$path$file 
+		curl $dmverbose --fail --retry 4 -OL http://$mirror${path}md5sums.txt
+		if [ $(getprop ro.product.cpu.abi) = x86 ];then
+			file=$(grep i686 md5sums.txt | awk {'print $2'})
+		else
+			file=$(grep boot md5sums.txt | awk {'print $2'})
+		fi
+		sed '2q;d' md5sums.txt > $file.md5
+		rm md5sums.txt
+		printdownloadingx86two 
+		curl $dmverbose -C - --fail --retry 4 -OL http://$mirror$path$file 
 	fi
 }
 

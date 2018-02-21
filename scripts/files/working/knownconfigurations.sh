@@ -3,17 +3,17 @@
 # Hosting https://sdrausty.github.io/TermuxArch courtesy https://pages.github.com
 # https://sdrausty.github.io/TermuxArch/CONTRIBUTORS Thank you for your help.
 # https://sdrausty.github.io/TermuxArch/README has information about this project.
-# Please add configurations to this list if you find one that is not listed.
-# Copy this file to `setupTermuxArchConfigs.sh` with prefered parameters.
+# Create `setupTermuxArchConfigs.sh` from this file in your working directory by using `bash setupTermuxArch.sh --manual`.
 # Run `bash setupTermuxArch.sh` and `setupTermuxArchConfigs.sh` loads automaticaly.
-# Change mirror to desired geographic location to resolve 404 and md5sum errors.
-# User configurable variables are in `setupTermuxArchConfigs.sh`.
-# Create this file from `kownconfigurations.sh` in the working directory.
+# See `bash setupTermuxArch.sh --help` for more information.  
+# Change mirror to desired geographic location in `setupTermuxArchConfigs.sh` to resolve 404 and checksum errors.
+# The following user configurable variables are available in this file:
 ################################################################################
-
+cmirror="http://mirror.archlinuxarm.org/"
+#cmirror="http://os.archlinuxarm.org/"
 #dm=curl
 #dm=wget
-dmverbose="-q"
+#dmverbose="-q"
 #dmverbose="-v"
 
 aarch64 ()
@@ -50,8 +50,7 @@ armv7lChrome ()
 
 i686 ()
 {
-	# i686 is frozen at release 2017.03.01-i686. See https://www.archlinux.org/news/phasing-out-i686-support/ for more information.  Inquire at https://archlinux32.org/ for updates.   
-	file=archlinux-bootstrap-2017.03.01-i686.tar.gz
+	# Information at https://www.archlinux.org/news/phasing-out-i686-support/ and https://archlinux32.org/ regarding why i686 is currently frozen at release 2017.03.01-i686.  $file is read from md5sums.txt
 	mirror=archive.archlinux.org
 	path=/iso/2017.03.01/
 	makesystem 
@@ -59,7 +58,7 @@ i686 ()
 
 x86_64 ()
 {
-	file=archlinux-bootstrap-2018.02.01-x86_64.tar.gz
+	# $file is read from md5sums.txt
 	mirror=mirror.rackspace.com
 	path=/archlinux/iso/latest/
 	makesystem 

@@ -51,8 +51,13 @@ addbashrc ()
 
 adddfa ()
 {
-	:
-	# userspace command
+	cat > root/bin/dfa <<- EOM
+	#!/bin/bash -e
+	units=\`df 2>/dev/null | awk 'FNR == 1 {print \$2}'\`
+	usrspace=\`df 2>/dev/null | grep "/data" | awk {'print \$4'}\`
+	printf "\033[0;33m\$usrspace \$units of free user space is available on this device.\n\033[0m"
+	EOM
+	chmod 770 root/bin/dfa 
 }
 
 addprofile ()
@@ -191,7 +196,12 @@ addv ()
 {
 	cat > root/bin/v  <<- EOM
 	#!/bin/bash -e
-	vim \$@
+	if [ ! -e /usr/bin/vim ] ; then
+		pacman -Syu vim --noconfirm
+		vim \$@
+	else
+		vim \$@
+	fi
 	EOM
 	chmod 770 root/bin/v 
 }
@@ -234,10 +244,12 @@ makefinishsetup ()
 	fi
 	cat >> root/bin/$binfs <<- EOM
 	if [ $(getprop ro.product.cpu.abi) = x86 ] || [ $(getprop ro.product.cpu.abi) = x86_64 ];then
-		pacman -Syu sed nano vim --noconfirm 
+		pacman -Syu sed --noconfirm ||:
+	else
+		pacman -Syu --noconfirm ||:
 	fi
 	locale-gen
-	printf '\033]2; 🕙 < 🕛 Arch Linux in Termux is installed and configured.  📲  \007'
+	printf '\033]2; 🕛 > 🕙 Arch Linux in Termux is installed and configured.  📲  \007'
 	rm \$HOME/bin/finishsetup.sh 2>/dev/null ||:
 	EOM
 	chmod 770 root/bin/finishsetup.sh 
